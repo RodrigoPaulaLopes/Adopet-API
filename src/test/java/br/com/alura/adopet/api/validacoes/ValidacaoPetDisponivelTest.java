@@ -29,7 +29,6 @@ class ValidacaoPetDisponivelTest {
     @Test
     public void deveValidarPetDisponivel() {
         //ARRANGE
-        var dto = new SolicitacaoAdocaoDto(7l, 2l, "erro qualquer");
         BDDMockito.given(petRepository.getReferenceById(Mockito.anyLong())).willReturn(pet);
         BDDMockito.given(pet.getAdotado()).willReturn(false);
         //ACT + ASSERT
@@ -40,9 +39,9 @@ class ValidacaoPetDisponivelTest {
     @Test
     public void naodeveValidarPetDisponivel() {
         //ARRANGE
-        var dto = new SolicitacaoAdocaoDto(7l, 2l, "erro qualquer");
-        BDDMockito.given(petRepository.getReferenceById(Mockito.anyLong())).willReturn(pet);
-        BDDMockito.given(pet.getAdotado()).willReturn(false);
+
+        BDDMockito.given(petRepository.getReferenceById(dto.idPet())).willReturn(pet);
+        BDDMockito.given(pet.getAdotado()).willReturn(true);
         //ACT + ASSERT
 
         Assertions.assertThrows(ValidacaoException.class, () -> validacao.validar(dto));
